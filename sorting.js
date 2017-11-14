@@ -15,39 +15,93 @@ function findNumber(num, range) {
 class Sorting {
 
   static SelectionSort(array) {
-    for (let i = 0; i < array.length - 1; i++) {
+    let _array = array.slice();
+    for (let i = 0; i < _array.length - 1; i++) {
       let minIndex = i;
-      for (let j = i + 1; j < array.length; j++) {
-        if (array[j] < array[minIndex]) {
+      for (let j = i + 1; j < _array.length; j++) {
+        if (_array[j] < _array[minIndex]) {
           minIndex = j;
         }
-        if (i !== minIndex) {
-          const tmp = array[i];
-          array[i] = array[minIndex];
-          array[minIndex] = tmp;
-        }
+      }
+      if (i !== minIndex) {
+        const tmp = _array[i];
+        _array[i] = _array[minIndex];
+        _array[minIndex] = tmp;
       }
     }
-    console.log('Selection', array);
+    console.log('Selection        = ', _array);
   }
 
   static InsertionSort(array) {
-    for (let i = 0; i < array.length; i++) {
-      const currentElement = array[i];
+    let _array = array.slice();
+    for (let i = 1; i < _array.length; i++) {
+      const currentElement = _array[i];
       let previusIndex = i - 1;
-      while (previusIndex >= 0 && array[previusIndex] > currentElement) {
-        array[previusIndex + 1] = array[previusIndex];
-        array[previusIndex] = currentElement;
+      while (previusIndex >= 0 && _array[previusIndex] > currentElement) {
+        _array[previusIndex + 1] = _array[previusIndex];
+        _array[previusIndex] = currentElement;
         --previusIndex;
       }
     }
-    console.log('Insertion', array);
+    console.log('Insertion        = ', _array);
   }
+
+  static BubbleSort(array) {
+    let _array = array.slice();
+    let swapped = true;
+    for (let i = 0; i < _array.length; i++) {
+      if (swapped) {
+        swapped = false;
+        for (let j = 1; j < _array.length - i; j++) {
+          if (_array[j-1] > _array[j]) {
+            swapped = true;
+            const tmp = _array[j-1];
+            _array[j-1] = _array[j];
+            _array[j] = tmp;
+          }
+        }
+        if (!swapped) {
+          console.log('Bubble           = ', _array);
+          break;
+        }
+      }
+    }
+
+  }
+
+  static MergeSort(array) {
+    let _array = array.slice();
+
+    let segmentationArr = (arr) => {
+      if (arr.length === 1) {return arr;}
+      const midPoint = arr.length / 2;
+      const leftArr = arr.slice(0, midPoint);
+      const rightArr = arr.slice(arr.length - midPoint);
+      let l = segmentationArr(leftArr);
+      let r = segmentationArr(rightArr);
+      return Merge(l, r);
+    }
+
+    let Merge = (lArr, rArr)=> {
+      let l = 0, r = 0, result = [];
+      while (l < lArr.length && r < rArr.length) {
+        result.push(lArr[l] < rArr[r] ? lArr[l++] : rArr[r++]);
+      }
+      return result.concat(l < lArr.length ? lArr.slice(l) : rArr.slice(r));
+    }
+
+    console.log('Merge            = ', segmentationArr(_array));
+
+  }
+
 }
 
-const array = [1, 2, 7, 4, 5, -6];
+var array = [1, -2, 10, 7, 8];
 
+console.log('Not sorted array = ', array);
 Sorting.SelectionSort(array);
 Sorting.InsertionSort(array);
+Sorting.BubbleSort(array);
+Sorting.MergeSort(array);
 
 findNumber(3, 1000);
