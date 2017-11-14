@@ -72,13 +72,13 @@ class Sorting {
   static MergeSort(array) {
     let _array = array.slice();
 
-    let segmentationArr = (arr) => {
+    let partition = (arr) => {
       if (arr.length === 1) {return arr;}
       const midPoint = arr.length / 2;
       const leftArr = arr.slice(0, midPoint);
       const rightArr = arr.slice(arr.length - midPoint);
-      let l = segmentationArr(leftArr);
-      let r = segmentationArr(rightArr);
+      let l = partition(leftArr);
+      let r = partition(rightArr);
       return Merge(l, r);
     }
 
@@ -90,18 +90,55 @@ class Sorting {
       return result.concat(l < lArr.length ? lArr.slice(l) : rArr.slice(r));
     }
 
-    console.log('Merge            = ', segmentationArr(_array));
+    console.log('Merge            = ', partition(_array));
 
+  }
+
+  static QuickSort(array) {
+    let _array = array.slice();
+
+    let partition = (arr, left, right) => {
+      let i = left, j = right;
+      let pivot = arr[Math.floor((left + right)/2)];
+
+      if (i <= j) {
+        while (arr[i] < pivot) {
+          i++;
+        }
+        while (arr[j] > pivot) {
+          j--;
+        }
+        if (i <= j) {
+          let tmp = arr[i];
+          arr[i] = arr[j];
+          arr[j] = tmp;
+          i++;
+          j--;
+        }
+      }
+
+      if (left < j) {
+        partition(arr, left, j);
+      }
+      if (i < right) {
+        partition(arr, i, right);
+      }
+
+    }
+
+    partition(_array, 0, _array.length-1);
+    console.log('Quick            = ', _array);
   }
 
 }
 
-var array = [1, -2, 10, 7, 8];
+var array = [1, -2, 10, 7];
 
 console.log('Not sorted array = ', array);
 Sorting.SelectionSort(array);
 Sorting.InsertionSort(array);
 Sorting.BubbleSort(array);
 Sorting.MergeSort(array);
+Sorting.QuickSort(array);
 
 findNumber(3, 1000);
